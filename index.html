@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<script type="text/javascript" src="cordova.js"></script>
+		<link rel="stylesheet" href="jquery.mobile-1.4.5.css">
+		<script src="jquery.js"></script>
+		<script src="jquery.mobile-1.4.5.js"></script>   
+		<link rel="stylesheet" href="eaflet.css"/>
+		<script src="leaflet.js"></script>		
+	   <title>Blank App</title>
+	   <script>
+if(navigator.geolocation == undefined){
+		
+	}else{
+		
+		navigator.geolocation.getCurrentPosition(userLocated,locationError);
+		function userLocated(position){
+			var latitude = position.coords.latitude;
+			var longitude = position.coords.longitude;
+			alert ("Lat:"+latitude +", Long:"+longitude);
+			
+			var mymap = L.map('mapid').setView([latitude, longitude], 16);
+			var marker = L.marker([latitude, longitude]).addTo(mymap);
+			marker.bindPopup("Hello Popup Marker").openPopup();
+			var circle = L.circle([latitude, longitude], {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.5,
+			radius: 100
+}).addTo(mymap);
+
+circle.bindPopup("You may find the treasure around here");
+L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+maxZoom: 20,
+attribution: 'Map data &copy;'+
+'<a href="https://www.openstreetmap.org/">OpenStreetMap</a>'+
+'contributors,<a href="https://creativecommons.org/licenses'+
+'/by-sa/2.0/">CC-BY-SA</a>,Imagery © <a href="https://'+
+'www.mapbox.com/">Mapbox</a>',
+id: 'mapbox.streets',
+accessToken:'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYyc'+
+'XBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+}).addTo(mymap);
+			}		
+	}
+		function locationError(error){
+			
+	}
+	
+	
+	
+	$( document ).on( "pagecreate", "#homepage", function() {
+    $( document ).on( "swipeleft swiperight", "#homepage", function( e ) {
+        // We check if there is no open panel on the page because otherwise
+        // a swipe to close the left panel would also open the right panel (and v.v.).
+        // We do this by checking the data that the framework stores on the page element (panel: open).
+        if ( $( ".ui-page-active" ).jqmData( "mypanel" ) !== "open" ) {
+            if ( e.type === "swipeleft" ) {
+                $( "#myPanel" ).panel( "open" );
+            } else if ( e.type === "swiperight" ) {
+                $( "#myPanel" ).panel( "open" );
+            }
+        }
+    });
+});
+
+
+</script>
+	   <style>
+			* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #474e5d;
+  font-family: Helvetica, sans-serif;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* The actual timeline (the vertical ruler) */
+.timeline::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  background-color: white;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -3px;
+}
+
+/* Container around content */
+.container {
+  padding: 10px 40px;
+  position: relative;
+  background-color: inherit;
+  width: 50%;
+}
+
+/* The circles on the timeline */
+.container::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -17px;
+  background-color: white;
+  border: 4px solid #FF9F55;
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Place the container to the left */
+.left {
+  left: 0;
+}
+
+/* Place the container to the right */
+.right {
+  left: 50%;
+}
+
+/* Add arrows to the left container (pointing right) */
+.left::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  right: 30px;
+  border: medium solid white;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent white;
+}
+
+/* Add arrows to the right container (pointing left) */
+.right::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  left: 30px;
+  border: medium solid white;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+}
+
+/* Fix the circle for containers on the right side */
+.right::after {
+  left: -16px;
+}
+
+/* The actual content */
+.content {
+  padding: 20px 30px;
+  background-color: white;
+  position: relative;
+  border-radius: 6px;
+}
+
+/* Media queries - Responsive timeline on screens less than 600px wide */
+@media screen and (max-width: 600px) {
+  /* Place the timelime to the left */
+  .timeline::after {
+  left: 31px;
+  }
+  
+  /* Full-width containers */
+  .container {
+  width: 100%;
+  padding-left: 70px;
+  padding-right: 25px;
+  }
+  
+  /* Make sure that all arrows are pointing leftwards */
+  .container::before {
+  left: 60px;
+  border: medium solid white;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+  }
+
+  /* Make sure all circles are at the same spot */
+  .left::after, .right::after {
+  left: 15px;
+  }
+  
+  /* Make all right containers behave like the left ones */
+  .right {
+  left: 0%;
+  }
+}
+	   </style>
+    </head>
+    <body>
+		<div data-role = "page" id="homepage">
+			<div data-role="header">
+			
+				<a href="#myPanel"  data-icon="bars" class="">Panel</a>
+				<h1><img src="utm.png" alt="Low resolution logo"class="align-right" width="100%" height="20%"/><h1>	
+				
+			</div>
+			
+			<div data-role="panel" data-position="left" data-display="push" id="myPanel" > 
+				  
+				 <li> <a href="#courses">courses</a></li>
+				  <li><a href="#geoloc">geoloc</a></li>
+				  <li><a href="#login">Login</a></li>
+				  <li><a href="#news">News</a></li>
+					
+			</div>	
+			
+			
+			
+			
+			<div data-role="main" class="ui-content">
+			<div data-role="navbar">
+            <ul>
+                <li><a href="#homepage" data-icon="home">Home</a></li>
+                <li><a href="#geoloc" data-icon="location">geolocation</a></li>
+                <li><a href="#feedback" data-icon="info">Feedback</a></li>
+            </ul>
+            </div>
+			
+			
+			<h1 id="orientation">orientationchange Not Supported on this Device.</h1>
+ 
+					<script>
+					// Bind an event to window.orientationchange that, when the device is turned,
+					// gets the orientation and displays it to on screen.
+					$( window ).on( "orientationchange", function( event ) {
+					  $( "#orientation" ).text( "This device is in " + event.orientation + " mode!" );
+					});
+					 
+					// You can also manually force this event to fire.
+					$( window ).orientationchange();
+					</script>
+					
+					
+					<img id="myImg" src="2.jpeg" alt="sea" style="width:100%;max-width:300px">
+			<div id="myModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
+  <div id="caption"></div>
+</div>			
+			<script>
+			
+			
+					// Bind an event to window.orientationchange that, when the device is turned,
+					// gets the orientation and displays it to on screen.
+					$( window ).on( "orientationchange", function( event ) {
+					  $( "#orientation" ).text( "This device is in " + event.orientation + " mode!" );
+					});
+					 
+					// You can also manually force this event to fire.
+					$( window ).orientationchange();
+			</script>
+			
+			
+			<script>
+					var modal = document.getElementById("myModal");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() { 
+  modal.style.display = "none";
+}
+			</script>	
+					
+			<div class="timeline">
+  <div class="container left">
+    <div class="content">
+      <h2>2010</h2>
+      <p>The University of Technology, Mauritius, as at 2010, and now in its tenth year of operation, is poised for a phase of significant expansion in line with the provisions of its Act and the national agenda of increasing access to tertiary education, capacity building in the context of the ongoing economic reforms, promotion of knowledge, research and innovation, as propounded by the Ministry of Tertiary Education, Science, Research and Technology. The University of Technology, Mauritius has the determination to become one of the leading tertiary education institutions of the region. UTM is a member of the Association of Commonwealth Universities. The forthcoming construction of the new campus at Cote DOr will enable the UTM to increase its number of students, the number of programmes offered and provide better facilities.</p>
+    </div>
+  </div>
+  <div class="container right">
+    <div class="content">
+      <h2>2001</h2>
+      <p>Two Schools were created: the School of Business Informatics and Software Engineering (SOBISE) and the School of Public Sector Policy and Management (SOPSPAM) to welcome their first cohorts of undergraduate students.</p>
+    </div>
+  </div>
+  <div class="container left">
+    <div class="content">
+      <h2>2000</h2>
+      <p>The University of Technology, Mauritius (UTM) was created in year 2000 by Act of Parliament as the Government implemented its plan to have a second University which would focus towards development of oriented sectors in particular.</p>
+    </div>
+  </div>
+  </div>	
+				
+			</div>
+			
+			<div data-role="footer" id="footer">
+				<p> University Of Technology, Mauritius</p>
+			</div>
+		</div>
+		
+		// geolocation page.....................................
+		
+		<div data-role = "page" id="geoloc">
+			<div data-role="header">
+			<a href="#myPanel"  data-icon="bars" class="">Panel</a>
+				<h1><img src="utm.png" alt="Low resolution logo"class="align-right" width="300px" height="100px"/><h1>
+			</div>
+			
+			<div data-role="panel" data-position="left" data-display="push" id="myPanel" > 
+				 
+				 <li> <a href="#courses">courses</a></li>
+				  <li><a href="#geoloc">geoloc</a></li>
+				 <li><a href="#login">Login</a></li>
+				 <li><a href="#news">News</a></li>
+					
+			</div>	
+			
+			
+			
+			<div data-role="main" class="ui-content">
+			
+			<div data-role="navbar">
+            <ul>
+                <li><a href="#homepage" data-icon="home">Home</a></li>
+                <li><a href="#geoloc" data-icon="grid">geolocation</a></li>
+                <li><a href="#feedback" data-icon="info">feedback</a></li>
+                </ul>
+            </div>
+			
+			
+<div id="mapid" style="width: 1000px; height: 600px;"></div>
+
+
+			</div>
+			
+			<div data-role="footer" id="footer">
+				<p> University Of Technology, Mauritius</p>
+			</div>
+		</div>
+		
+		
+		//...........LOGIN 
+		
+		
+		<div data-role="page" id="login"  >
+          <div data-role="header">
+              <h1>Login</h1>
+                 <a href="#myPanel"  data-icon="bars" class="">Panel</a>
+				<h1><img src="utm.png" alt="Low resolution logo"class="align-right" width="100%" height="20%"/><h1>	
+				
+			</div>
+			
+			<div data-role="panel" data-position="left" data-display="push" id="myPanel" > 
+				  
+				 <li> <a href="#courses">courses</a></li>
+				  <li><a href="#geoloc">geoloc</a></li>
+				  <li><a href="#login">Login</a></li>
+				  <li><a href="#news">News</a></li>
+				 
+					
+			</div>	
+			
+			
+			
+			
+			<div data-role="main" class="ui-content">
+			<div data-role="navbar">
+            <ul>
+                <li><a href="#homepage" data-icon="home">Home</a></li>
+                <li><a href="#geoloc" data-icon="location">geolocation</a></li>
+                <li><a href="#feedback" data-icon="info">Feedback</a></li>
+            </ul>
+            </div>    
+          </div>
+      <form action="validation.php" method="post">
+  	     <div data-role="main" class="ui-content">
+            <p>Welcome to our Application</p>
+               <input  id= "user" type="text" required class="form-control"/>
+               <input  id= "pwd" type="password" required class="form-control"/>
+               <button type="submit" id="btnLog" class="ui-btn ui-btn-inline ui-icon-user ui-btn-icon-right">Login</button>
+               <a href="#register"  class="ui-btn ui-btn-inline ui-icon-user ui-btn-icon-right">Registers</a>
+        <div data-role="footer">
+          <h1> University Of Technology, Mauritius</h1>
+        </div>
+
+      </div>
+	  </form>
+    </div>
+
+        <!--Page Register -->
+
+        <div data-role="page" id="register"  >
+          <div data-role="header">
+              <h1>Register</h1>
+                 <a href="#myPanel"  data-icon="bars" class="">Panel</a>
+				<h1><img src="utm.png" alt="Low resolution logo"class="align-right" width="100%" height="20%"/><h1>	
+				
+			</div>
+			
+			<div data-role="panel" data-position="left" data-display="push" id="myPanel" > 
+				  
+				 <li> <a href="#courses">courses</a></li>
+				  <li><a href="#geoloc">geoloc</a></li>
+				  <li><a href="#login">Login</a></li>
+				  <li><a href="#news">News</a></li>
+				 
+					
+			</div>	
+			
+			
+			
+			
+			<div data-role="main" class="ui-content">
+			<div data-role="navbar">
+            <ul>
+                <li><a href="#homepage" data-icon="home">Home</a></li>
+                <li><a href="#geoloc" data-icon="location">geolocation</a></li>
+                <li><a href="#feedback" data-icon="info">Feedback</a></li>
+            </ul>
+            </div>  
+          </div>
+		<form action="registration.php" method="post">
+         <div data-role="main" class="ui-content">
+            <p>Welcome to our Registration</p>
+               <input  id= "fname" type="text" placeholder="First Name" required class="form-control"/>
+               <input  id= "lname" type="text" placeholder="Last Name" required class="form-control"/>
+               <input  id= "users" type="text" placeholder="Username" required class="form-control"/>
+               <input  id= "pwds" type="password" placeholder="Password" required class="form-control"/>
+               <button type="submit" id="btnReg" class="ui-btn ui-btn-inline ui-icon-user ui-btn-icon-right">Register</button>
+        <div data-role="footer">
+          <h1> University Of Technology, Mauritius</h1>
+        </div>
+
+      </div>
+	</form>
+  </div>
+  
+  
+  // news..........................................
+  <script type="text/javascript">
+
+            
+        
+
+
+			function insertNews(){
+			
+			    
+                alert("insert news Called");
+			    var today = new Date();
+				var date = today.getDate();
+				var month = today.getMonth();
+				var year = today.getFullYear();
+				
+				
+				
+				
+			  
+				var datestr =date+"/"+month+"/"+year;
+				
+				
+			    var jojo_c=datestr.toString();
+				
+		        var title_c = $("[name='title']").val();
+                var author_c = $("[name='author']").val();
+			          
+			   
+			   
+					var url = "http://localhost/onlineData/index.php?operation=2&title="+title_c+"&author="+author_c+"&jojo="+jojo_c;
+				
+					var response = null;
+					$.get(url,function(data,status){
+						alert("returned value is: "+data);
+						response = data;
+                  $("#p_result").text(response);
+				  document.location.reload()
+				});
+				
+			}
+		</script>
+		
+  <div data-role = "page" id="news">
+			<div data-role="header">
+			
+			
+				<a href="#myPanel"  data-icon="bars" class="">Panel</a>
+				<h1><img src="utm.png" alt="Low resolution logo"class="align-right" width="100%" height="20%"/><h1>	
+				
+			</div>
+			
+			<div data-role="panel" data-position="left" data-display="push" id="myPanel" > 
+				  
+				 <li> <a href="#courses">courses</a></li>
+				  <li><a href="#geoloc">geoloc</a></li>
+				  <li><a href="#login">Login</a></li>
+				  <li><a href="#news">News</a></li>
+					
+			</div>	
+			
+			
+			
+			
+			<div data-role="main" class="ui-content">
+			<div data-role="navbar">
+            <ul>
+                <li><a href="#homepage" data-icon="home">Home</a></li>
+                <li><a href="#geoloc" data-icon="location">geolocation</a></li>
+                <li><a href="#feedback" data-icon="info">Feedback</a></li>
+            </ul>
+            </div>
+				
+			</div>
+			<form>
+                    <label class="ui-hidden-accessible">title</label>
+                    <input name="title" type="text" placeholder="title" />
+                    <label class="ui-hidden-accessible">author</label>
+                    <input name="author" type="text" placeholder="Details" />
+					<!--<label class="ui-hidden-accessible">jojo</label>
+					<input name="jojo" type="text" placeholder="jojo" />-->
+                    <
+                    <input type="submit" value="Insert Record" onclick="insertNews()"/>
+        
+                </form>
+            <p id="p_result"></p>
+			<?php
+			$con = mysqli_connect("localhost","root","","news");
+			$query = mysqli_query($con,"select * from tblnews ORDER BY id DESC");
+			while($row=mysqli_fetch_array($query)){
+				
+			?>
+
+
+			<ul data-role="listview">
+			    <li><h5><?=$row['title']; ?></h5><p><?=$row['notes']; ?>"</p> 
+					 <?=$row['date']; ?></li>
+
+			</ul>
+			<?php } ?>
+</div>
+			
+		//courses page.......................................
+		
+		
+		<div data-role = "page" id="courses">
+			<div data-role="header">
+			
+				<a href="#myPanel"  data-icon="bars" class="">Panel</a>
+				<h1><img src="utm.png" alt="Low resolution logo"class="align-right" width="300px" height="100px"/><h1>	
+				
+			</div>
+			
+			<div data-role="panel" data-position="left" data-display="push" id="myPanel" > 
+				  <li><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a></li>
+				  <li> <a href="#courses">courses</a></li>
+				  <li><a href="#geoloc">geoloc</a></li>
+				 <li><a href="#login">Login</a></li>
+				  <li><a href="#news">News</a></li>
+				 
+					
+			</div>	
+			
+			
+			
+			
+			<div data-role="main" class="ui-content">
+			<div data-role="navbar">
+            <ul>
+                <li><a href="#homepage" data-icon="home">Home</a></li>
+                <li><a href="#geoloc" data-icon="location">geolocation</a></li>
+                <li><a href="#feedback" data-icon="info">Feedback</a></li>
+            </ul>
+			
+			
+			<style>
+				table {
+				  border-collapse: collapse;
+				  border-spacing: 0;
+				  width: 100%;
+				  border: 1px solid #ddd;
+				}
+
+				th, td {
+				  text-align: center;
+				  padding: 16px;
+				}
+
+				th:first-child, td:first-child {
+				  text-align: left;
+				}
+
+				tr:nth-child(even) {
+				  background-color: #f2f2f2
+				}
+
+				.fa-check {
+				  color: green;
+				}
+
+				.fa-remove {
+				  color: red;
+				}
+			</style>
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+
+</script>
+
+<h2>Courses </h2>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for courses.." title="Type in a name">
+<h3>Undergraduate Programmes - School of Innovative Technologies and Engineering (SITE)
+</h3>
+
+				<table id="myTable">
+				  <tr>
+					<th style="width:50%">Name</th>
+					<th>Mode</th>
+					<th>Duration</th>
+				  </tr>
+				  <tr>
+					<td>BEng (Hons) Civil Engineering (Top Up) (run by JSSATE, Mauritius)	FT</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >2 ½ yrs / 3 ½ yrs	</i></td>
+				  </tr>
+				  <tr>
+					<td>BSc (Hons) Business Information Systems	</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >3 yrs / 4 yrs</i></td>
+				  </tr>
+				  <tr>
+					<td>BSc (Hons) Computer Science with Network Security	</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >3 yrs / 4 yrs</i></td>
+				  </tr>
+				  <tr>
+					<td>BSc (Hons) Web Technologies	</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >3 yrs / 4½ yrs</i></td>
+				  </tr>
+				  <tr>
+					<td>BA (Hons) Graphics Design	</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >3 yrs / 4½ yrs</i></td>
+				  </tr>
+			
+	
+	<tr><td><h3>Undergraduate Programmes - School of Business, Management and Finance (SBMF)</td>
+</h3></tr>
+
+				
+				  <tr>
+					<th style="width:50%">Name</th>
+					<th>Mode</th>
+					<th>Duration</th>
+				  </tr>
+				  <tr>
+					<td>Undergraduate Programmes - School of Business, Management and Finance (SBMF)
+</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >2 ½ yrs / 3 ½ yrs	</i></td>
+				  </tr>
+				  <tr>
+					<td>BSc (Hons) Banking and International Finance	</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >3 yrs / 4 yrs</i></td>
+				  </tr>
+				  <tr>
+					<td>BSc (Hons) Financial Services with Law		</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >3 yrs / 4 yrs</i></td>
+				  </tr>
+				  <tr>
+					<td>BSc (Hons) Economics with Management / with Finance / with Finance and International Business		</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >3 yrs / 4½ yrs</i></td>
+				  </tr>
+				  <tr>
+					<td>BSc (Hons) Financial Management with specialization in Public Finance		</td>
+					<td><i >FT/PT	</i></td>
+					<td><i >3 yrs / 4½ yrs</i></td>
+				  </tr>
+				</table>
+
+            </div>
+			
+			
+			
+					
+				
+				
+			</div>
+			
+			<div data-role="footer" id="footer">
+				<p> University Of Technology, Mauritius</p>
+			</div>
+		</div>
+		
+		
+		//feedback pages...............................
+		
+		<div data-role = "page" id="feedback">
+			<div data-role="header">
+			
+				<a href="#myPanel"  data-icon="bars" class="">Panel</a>
+				<h1><img src="utm.png" alt="Low resolution logo"class="align-right" width="300px" height="100px"/><h1>	
+				
+			</div>
+			
+			<div data-role="panel" data-position="left" data-display="push" id="myPanel" > 
+				  
+				 <li> <a href="#courses">courses</a></li>
+				  <li><a href="#geoloc">geoloc</a></li>
+				 <li><a href="#login">Login</a></li>
+					
+			</div>	
+			
+	<script>
+	
+	 db=window.openDatabase("FeedbackDB", "1.0", "Simple Demo", 2*1024*1024);
+     db.transaction(createDB, errorCB, successCB);
+
+	//document.addEventListener("deviceready", onDeviceReady, false);
+
+	
+	function createDB(tx){
+	 tx.executeSql('CREATE TABLE IF NOT EXISTS Feedback(id INT, name TEXT, message TEXT)');
+    }
+	
+    function errorCB(err){
+     alert("SQL Error: "+err.code);
+    }
+	
+    function successCB(){
+    
+    }
+	
+    function submitForm(){
+     db.transaction(insertDB,errorCB);
+	 $.mobile.changePage("#pagetwo", {reverse:false, transition:"slide"});
+     return false;
+    }
+	
+	function insertDB(tx){
+     var name_c=$("[name='name']").val();
+     var message_c=$("[name='message']").val();
+     var sql='INSERT INTO Feedback (name, message) VALUES (?,?)';
+     tx.executeSql(sql,[name_c,message_c],successQueryDB,errorCB);
+    }
+	
+	function successQueryDB(tx){
+     alert("Insert Successful");
+     tx.executeSql('SELECT * FROM Feedback',[],renderListCB,errorCB)
+    }
+	
+	function renderListCB(tx,results){
+	 var htmlString='';
+	 var len = results.rows.length;
+	 
+	 for(var i=0; i<len;i++){
+     htmlString+='<li>'+results.rows.item(i).name+'<br>'+results.rows.item(i).message+'</li>';
+     }
+	
+	 $('#resultList').html(htmlString);
+     $('#resultList').listview('refresh');
+		
+	}
+
+
+ 
+   </script>
+			
+			<div data-role="main" class="ui-content">
+			<div data-role="navbar">
+            <ul>
+                <li><a href="#homepage" data-icon="home">Home</a></li>
+                <li><a href="#geoloc" data-icon="location">geolocation</a></li>
+                <li><a href="#feedback" data-icon="info">Feedback</a></li>
+            </ul>
+			
+			 <form method="post" onSubmit="return submitForm()">
+     <label class="ui-hidden-accessible">Name</label><input name="name" type="text" placeholder="name"/>
+     <label class="ui-hidden-accessible">enter feedback</label><input name="message" type="text" placeholder="message"/>
+     <input type="submit" value="submit"/>
+   
+    </form>
+            </div>
+			
+			
+			
+					
+				
+				
+			</div>
+			
+			<div data-role="footer" id="footer">
+				<p> University Of Technology, Mauritius</p>
+			</div>
+		</div>
+        
+		
+		<div data-role="page" id="pagetwo"> <!-- page -->
+  <div data-role="header">
+    <h1>Feedback</h1>
+    <a href="#homepage" data-icon="home" data-iconpos="notext">Home</a>
+  </div>
+
+  <div data-role="main" class="ui-content">
+    
+    <div id="output"><ul data-role="listview" id="resultList"></ul></div>
+
+  </div> <!-- page -->
+             <!--Page Login -->
+
+        
+  
+  
+  
+  
+  
+  
+    </body>
+</html>
